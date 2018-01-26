@@ -62,10 +62,10 @@ Example: "countItem(['a', 'b', 'a'], 'a') should return 2"
 ===================== */
 
 var countItem = function(array, element) {
-  count = 0;
+  var count = 0;
   for (var i = 0; i < array.length; i++){
-    if (array[i] == element){count = count + 1;}
+    if (array[i] === element){count = count + 1;}
   }
+    return count;
 };
-
 console.log('countItem success:', countItem([1, 2, 3, 4, 5, 4, 4], 4) === 3);

@@ -30,7 +30,6 @@
   // Filter according to enrollment that is greater than this variable:
   var minEnrollment = 300;
 
-
   // clean data
   for (var i = 0; i < schools.length - 1; i++) {
     // If we have '19104 - 1234', splitting and taking the first (0th) element
@@ -59,27 +58,23 @@
   // filter data
   var filtered_data = [];
   var filtered_out = [];
-  for (var i = 0; i < schools.length - 1; i++) {
-    isOpen = schools[i].ACTIVE.toUpperCase() == 'OPEN';
-    isPublic = (schools[i].TYPE.toUpperCase() !== 'CHARTER' ||
-                schools[i].TYPE.toUpperCase() !== 'PRIVATE');
-    isSchool = (schools[i].HAS_KINDERGARTEN ||
-                schools[i].HAS_ELEMENTARY ||
-                schools[i].HAS_MIDDLE_SCHOOL ||
-                schools[i].HAS_HIGH_SCHOOL);
-    meetsMinimumEnrollment = schools[i].ENROLLMENT > minEnrollment;
-    meetsZipCondition = acceptedZipcodes.indexOf(schools[i].ZIPCODE) >= 0;
+    isOpen = schools[j].ACTIVE.toUpperCase() == 'OPEN';
+    isPublic = (schools[j].TYPE.toUpperCase() !== 'CHARTER' ||
+                schools[j].TYPE.toUpperCase() !== 'PRIVATE');
+    isSchool = (schools[j].HAS_KINDERGARTEN ||
+                schools[j].HAS_ELEMENTARY ||
+                schools[j].HAS_MIDDLE_SCHOOL ||
+                schools[j].HAS_HIGH_SCHOOL);
+    meetsMinimumEnrollment = schools[j].ENROLLMENT > minEnrollment;
+    meetsZipCondition = acceptedZipcodes.indexOf(schools[j].ZIPCODE) >= 0;
     filter_condition = (isOpen &&
                         isSchool &&
                         meetsMinimumEnrollment &&
                         !meetsZipCondition);
 
-    if (filter_condition) {
-      filtered_data.push(schools[i]);
-    } else {
-      filtered_out.push(schools[i]);
-    }
-  }
+    filtered_data = _.filter(school[i],filter_condition);
+    filtered_out = _.reject(school[i], filter_condition);
+
   console.log('Included:', filtered_data.length);
   console.log('Excluded:', filtered_out.length);
 

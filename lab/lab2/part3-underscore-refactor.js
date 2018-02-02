@@ -58,48 +58,43 @@
   // filter data
   var filtered_data = [];
   var filtered_out = [];
-    isOpen = schools[j].ACTIVE.toUpperCase() == 'OPEN';
-    isPublic = (schools[j].TYPE.toUpperCase() !== 'CHARTER' ||
-                schools[j].TYPE.toUpperCase() !== 'PRIVATE');
-    isSchool = (schools[j].HAS_KINDERGARTEN ||
-                schools[j].HAS_ELEMENTARY ||
-                schools[j].HAS_MIDDLE_SCHOOL ||
-                schools[j].HAS_HIGH_SCHOOL);
-    meetsMinimumEnrollment = schools[j].ENROLLMENT > minEnrollment;
-    meetsZipCondition = acceptedZipcodes.indexOf(schools[j].ZIPCODE) >= 0;
+    isOpen = schools[i].ACTIVE.toUpperCase() == 'OPEN';
+    isPublic = (schools[i].TYPE.toUpperCase() !== 'CHARTER' ||
+                schools[i].TYPE.toUpperCase() !== 'PRIVATE');
+    isSchool = (schools[i].HAS_KINDERGARTEN ||
+                schools[i].HAS_ELEMENTARY ||
+                schools[i].HAS_MIDDLE_SCHOOL ||
+                schools[i].HAS_HIGH_SCHOOL);
+    meetsMinimumEnrollment = schools[i].ENROLLMENT > minEnrollment;
+    meetsZipCondition = acceptedZipcodes.indexOf(schools[i].ZIPCODE) >= 0;
     filter_condition = (isOpen &&
                         isSchool &&
                         meetsMinimumEnrollment &&
                         !meetsZipCondition);
 
-    filtered_data = _.filter(school[i],filter_condition);
-    filtered_out = _.reject(school[i], filter_condition);
+    filtered_data = _.filter(schools[i],filter_condition);
+    filtered_out = _.reject(schools[i], filter_condition);
 
   console.log('Included:', filtered_data.length);
   console.log('Excluded:', filtered_out.length);
 
   // main loop
   var color;
-  for (var i = 0; i < filtered_data.length - 1; i++) {
-    isOpen = filtered_data[i].ACTIVE.toUpperCase() == 'OPEN';
-    isPublic = (filtered_data[i].TYPE.toUpperCase() !== 'CHARTER' ||
-                filtered_data[i].TYPE.toUpperCase() !== 'PRIVATE');
-    meetsMinimumEnrollment = filtered_data[i].ENROLLMENT > minEnrollment;
 
     // Constructing the styling  options for our map
-    if (filtered_data[i].HAS_HIGH_SCHOOL){
+for (var j = 0; j < filtered_data.length - 1; j++) {
+    if (filtered_data[j].HAS_HIGH_SCHOOL){
       color = '#0000FF';
-    } else if (filtered_data[i].HAS_MIDDLE_SCHOOL) {
-      color = '#00FF00';
+    } else if (filtered_data[j].HAS_MIDDLE_SCHOOL) {
+      color = '#00FF00' ;
     } else {
       color = '##FF0000';
     }
     // The style options
-    var pathOpts = {'radius': filtered_data[i].ENROLLMENT / 30,
+    var pathOpts = {'radius': filtered_data[j].ENROLLMENT / 30,
                     'fillColor': color};
-    L.circleMarker([filtered_data[i].Y, filtered_data[i].X], pathOpts)
-      .bindPopup(filtered_data[i].FACILNAME_LABEL)
+    L.circleMarker([filtered_data[j].Y, filtered_data[j].X], pathOpts)
+      .bindPopup(filtered_data[j].FACILNAME_LABEL)
       .addTo(map);
-  }
-
+}
 })();

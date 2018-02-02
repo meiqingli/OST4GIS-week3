@@ -58,22 +58,23 @@
   // filter data
   var filtered_data = [];
   var filtered_out = [];
-    isOpen = school.ACTIVE.toUpperCase() == 'OPEN';
-    isPublic = (school.TYPE.toUpperCase() !== 'CHARTER' ||
-                school.TYPE.toUpperCase() !== 'PRIVATE');
-    isSchool = (school.HAS_KINDERGARTEN ||
-                school.HAS_ELEMENTARY ||
-                school.HAS_MIDDLE_SCHOOL ||
-                school.HAS_HIGH_SCHOOL);
-    meetsMinimumEnrollment = school.ENROLLMENT > minEnrollment;
-    meetsZipCondition = acceptedZipcodes.indexOf(school.ZIPCODE) >= 0;
+    isOpen = ACTIVE.toUpperCase() == 'OPEN';
+    isPublic = (TYPE.toUpperCase() !== 'CHARTER' ||
+                TYPE.toUpperCase() !== 'PRIVATE');
+    isSchool = (HAS_KINDERGARTEN ||
+                HAS_ELEMENTARY ||
+                HAS_MIDDLE_SCHOOL ||
+                HAS_HIGH_SCHOOL);
+    meetsMinimumEnrollment = ENROLLMENT > minEnrollment;
+    meetsZipCondition = acceptedZipcodes.indexOf(s.ZIPCODE) >= 0;
     filter_condition = (isOpen &&
                         isSchool &&
                         meetsMinimumEnrollment &&
                         !meetsZipCondition);
 
-    filtered_data = _.filter(schools,function(school){filter_condition});
-    filtered_out = _.reject(schools, function(school){filter_condition});
+    filtered_data = _.filter(schools,function(school){return filter_condition == true;});
+    
+    filtered_out = _.reject(schools, function(school){return filter_condition == true;});
 
   console.log('Included:', filtered_data.length);
   console.log('Excluded:', filtered_out.length);

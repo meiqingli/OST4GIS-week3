@@ -58,43 +58,43 @@
   // filter data
   var filtered_data = [];
   var filtered_out = [];
-    isOpen = schools[i].ACTIVE.toUpperCase() == 'OPEN';
-    isPublic = (schools[i].TYPE.toUpperCase() !== 'CHARTER' ||
-                schools[i].TYPE.toUpperCase() !== 'PRIVATE');
-    isSchool = (schools[i].HAS_KINDERGARTEN ||
-                schools[i].HAS_ELEMENTARY ||
-                schools[i].HAS_MIDDLE_SCHOOL ||
-                schools[i].HAS_HIGH_SCHOOL);
-    meetsMinimumEnrollment = schools[i].ENROLLMENT > minEnrollment;
-    meetsZipCondition = acceptedZipcodes.indexOf(schools[i].ZIPCODE) >= 0;
+    isOpen = school.ACTIVE.toUpperCase() == 'OPEN';
+    isPublic = (school.TYPE.toUpperCase() !== 'CHARTER' ||
+                school.TYPE.toUpperCase() !== 'PRIVATE');
+    isSchool = (school.HAS_KINDERGARTEN ||
+                school.HAS_ELEMENTARY ||
+                school.HAS_MIDDLE_SCHOOL ||
+                school.HAS_HIGH_SCHOOL);
+    meetsMinimumEnrollment = school.ENROLLMENT > minEnrollment;
+    meetsZipCondition = acceptedZipcodes.indexOf(school.ZIPCODE) >= 0;
     filter_condition = (isOpen &&
                         isSchool &&
                         meetsMinimumEnrollment &&
                         !meetsZipCondition);
 
-    filtered_data = _.filter(schools[i],filter_condition);
-    filtered_out = _.reject(schools[i], filter_condition);
+    filtered_data = _.filter(schools,function(school){filter_condition});
+    filtered_out = _.reject(schools, function(school){filter_condition});
 
   console.log('Included:', filtered_data.length);
   console.log('Excluded:', filtered_out.length);
 
   // main loop
   var color;
-
     // Constructing the styling  options for our map
-for (var j = 0; j < filtered_data.length - 1; j++) {
-    if (filtered_data[j].HAS_HIGH_SCHOOL){
-      color = '#0000FF';
-    } else if (filtered_data[j].HAS_MIDDLE_SCHOOL) {
-      color = '#00FF00' ;
-    } else {
-      color = '##FF0000';
-    }
+    for (var i = 0; i < filtered_data.length - 1; i++) {
+      if (filtered_data[i].HAS_HIGH_SCHOOL){
+        color = '#0000FF';
+      } else if (filtered_data[i].HAS_MIDDLE_SCHOOL) {
+        color = '#00FF00' ;
+      } else {
+        color = '##FF0000';
+      }
+
     // The style options
-    var pathOpts = {'radius': filtered_data[j].ENROLLMENT / 30,
+    var pathOpts = {'radius': filtered_data[i].ENROLLMENT / 30,
                     'fillColor': color};
-    L.circleMarker([filtered_data[j].Y, filtered_data[j].X], pathOpts)
-      .bindPopup(filtered_data[j].FACILNAME_LABEL)
+    L.circleMarker([filtered_data[i].Y, filtered_data[i].X], pathOpts)
+      .bindPopup(filtered_data[i].FACILNAME_LABEL)
       .addTo(map);
 }
 })();

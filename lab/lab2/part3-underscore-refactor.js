@@ -57,27 +57,17 @@
 
   // filter data
   var filtered_data = [];
-  var filtered_out = [];
-    isOpen = ACTIVE.toUpperCase() == 'OPEN';
-    isPublic = (TYPE.toUpperCase() !== 'CHARTER' ||
-                TYPE.toUpperCase() !== 'PRIVATE');
-    isSchool = (HAS_KINDERGARTEN ||
-                HAS_ELEMENTARY ||
-                HAS_MIDDLE_SCHOOL ||
-                HAS_HIGH_SCHOOL);
-    meetsMinimumEnrollment = ENROLLMENT > minEnrollment;
-    meetsZipCondition = acceptedZipcodes.indexOf(s.ZIPCODE) >= 0;
-    filter_condition = (isOpen &&
-                        isSchool &&
-                        meetsMinimumEnrollment &&
-                        !meetsZipCondition);
 
-    filtered_data = _.filter(schools,function(school){return filter_condition == true;});
-    
-    filtered_out = _.reject(schools, function(school){return filter_condition == true;});
+  filtered_data = _.filter(schools,function(OBJECTID)
+  {return (OBJECTID.ACTIVE.toUpperCase() == 'OPEN') &&
+    (OBJECTID.HAS_KINDERGARTEN ||
+                OBJECTID.HAS_ELEMENTARY ||
+                OBJECTID.HAS_MIDDLE_SCHOOL ||
+                OBJECTID.HAS_HIGH_SCHOOL) &&
+    (OBJECTID.ENROLLMENT > minEnrollment) &&
+    (acceptedZipcodes.indexOf(OBJECTID.ZIPCODE) < 0) == true;});
 
-  console.log('Included:', filtered_data.length);
-  console.log('Excluded:', filtered_out.length);
+    console.log('Included:', filtered_data.length); 
 
   // main loop
   var color;
